@@ -1,5 +1,6 @@
 <?php
-include "../engine/Autoload.php";
+include dirname(__DIR__) . "/config/config.php";
+include ROOT_DIR . "/engine/Autoload.php";
 
 use app\engine\{Autoload, Db};
 use app\model\{Cart, Orders,Product, Users};
@@ -7,16 +8,7 @@ use app\model\{Cart, Orders,Product, Users};
 spl_autoload_register([new Autoload(), 'loadClass']);
 
 
-$product = new Product(new Db());
-$user = new Users(new Db());
-$cart = new Cart(new Db());
-$order = new Orders(new Db());
+$product = new Product("Пицца","Описание", 125);
+$product->insert();
 
-
-
-echo $order->getOne(4) . "<br>";
-echo $cart->getAll() . "<br>";
-echo $user->delete(3) . "<br>";
-
-
-var_dump($user);
+//var_dump($product->getOne(2));
