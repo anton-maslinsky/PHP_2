@@ -1,13 +1,14 @@
 <?php
 
 namespace app\engine;
+
 use app\traits\TSingletone;
 
 class Db
 {
     private $config = [
         'driver' => 'mysql',
-        'host' => 'php:3306',
+        'host' => 'localhost:3306',
         'login' => 'root',
         'password' => 'root',
         'database' => 'shop',
@@ -16,13 +17,11 @@ class Db
 
     use TSingletone;
 
-    protected $connection = null;  //объект PDO
-
+    protected $connection = null; //PDO
 
     protected function getConnection()
     {
         if (is_null($this->connection)) {
-//            var_dump("Connected to DB!");
             $this->connection = new \PDO(
                 $this->prepareDsnString(),
                 $this->config['login'],
@@ -31,6 +30,10 @@ class Db
             $this->connection->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
         }
         return $this->connection;
+    }
+
+    public function lastInsertId() {
+        return $this->connection->lastInsertId();
     }
 
     protected function prepareDsnString()
@@ -42,17 +45,23 @@ class Db
             $this->config['charset']
         );
     }
-
-    protected function query($sql, $params) {
-           $stmt = $this->getConnection()->prepare($sql);
-           $stmt->execute($params);
-//           var_dump($stmt);
-           return $stmt;
+    //sql = "SELECT FROM ... WHERE id = :id
+    //$params = ['id' => 1]
+    protected function query($sql, $params)
+    {
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
     }
 
     public function queryOne($sql, $params)
     {
         return $this->query($sql, $params)->fetch();
+    }
+
+    public function queryLimit($sql, $page) {
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->bindValue(1, $page, \PDO::PARAM_INT);
     }
 
     public function queryOneObject($sql, $params, $class)

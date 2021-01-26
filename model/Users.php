@@ -2,12 +2,12 @@
 
 namespace app\model;
 
-
-class Users extends Model
+class Users extends DbModel
 {
     public $id;
     public $login;
     public $pass;
+
 
     public function __construct($login = null, $pass = null)
     {
@@ -16,8 +16,9 @@ class Users extends Model
     }
 
 
-    public function getTableName()
-    {
+    public static function getTableName() {
         return 'users';
     }
+
+
 }
