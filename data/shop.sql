@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Янв 26 2021 г., 13:10
+-- Время создания: Янв 26 2021 г., 17:35
 -- Версия сервера: 8.0.19
 -- Версия PHP: 7.4.5
 
@@ -33,6 +33,13 @@ CREATE TABLE `basket` (
   `session_id` varchar(255) NOT NULL,
   `qty` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `basket`
+--
+
+INSERT INTO `basket` (`id`, `product_id`, `session_id`, `qty`) VALUES
+(1, 2, '1', 1);
 
 -- --------------------------------------------------------
 
@@ -148,7 +155,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `basket`
 --
 ALTER TABLE `basket`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `orders`
