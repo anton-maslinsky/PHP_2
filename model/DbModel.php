@@ -8,9 +8,7 @@ use app\engine\Db;
 
 abstract class DbModel extends Model
 {
-
     abstract public static function getTableName();
-
 
 //    public static function getLimit($page) {
 //        $tableName = static::getTableName();
@@ -37,6 +35,12 @@ abstract class DbModel extends Model
         return Db::getInstance()->queryAll($sql);
     }
 
+    public static function getBasket() {
+        $session_id = 1; // временное значение для проверки
+        $sql = "SELECT * FROM products AS p JOIN basket AS c ON p.id = c.product_id WHERE c.session_id = :session_id";
+        return Db::getInstance()->queryAll($sql, ['session_id' => $session_id]);
+    }
+
     public function insert() {
         $params = [];
         $columns = [];
@@ -60,14 +64,12 @@ abstract class DbModel extends Model
     }
 
     public function update($fieldName, $value) {
-//        $params = [];
 
         $tableName = static::getTableName();
 
         $sql = "UPDATE {$tableName} SET {$fieldName} = '{$value}' WHERE id = :id";
 
         Db::getInstance()->execute($sql, ['id' => $this->id]);
-//        var_dump($sql);
         $this->id = Db::getInstance()->lastInsertId();
 
         return $this;
@@ -86,5 +88,4 @@ abstract class DbModel extends Model
             $this->update();
         }
     }
-
 }

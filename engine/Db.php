@@ -45,8 +45,7 @@ class Db
             $this->config['charset']
         );
     }
-    //sql = "SELECT FROM ... WHERE id = :id
-    //$params = ['id' => 1]
+
     protected function query($sql, $params)
     {
         $stmt = $this->getConnection()->prepare($sql);

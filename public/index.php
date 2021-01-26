@@ -7,7 +7,7 @@ use app\model\{Product, Users};
 
 spl_autoload_register([new Autoload(), 'loadClass']);
 
-$controllerName = $_GET['c'] ?: 'product';
+$controllerName = $_GET['c'] ?: 'index';
 $actionName = $_GET['a'];
 
 $controllerClass = CONTROLLERS_NAMESPACE . ucfirst($controllerName) . "Controller";
