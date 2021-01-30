@@ -4,7 +4,7 @@
 namespace app\model;
 
 
-class Feedback extends  Model
+class Feedback extends  DbModel
 {
     public $id;
     public $name;
@@ -16,7 +16,7 @@ class Feedback extends  Model
         $this->feedback = $feedback;
     }
 
-    public function getTableName()
+    public static function getTableName()
     {
         return 'feedback';
     }

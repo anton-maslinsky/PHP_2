@@ -4,7 +4,7 @@
 namespace app\model;
 
 
-class Orders extends Model
+class Orders extends DbModel
 {
     public $id;
     public $user_name;
@@ -21,7 +21,7 @@ class Orders extends Model
     }
 
 
-    public function getTableName()
+    public static function getTableName()
     {
         return 'orders';
     }

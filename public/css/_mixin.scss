@@ -1,0 +1,42 @@
+@mixin font($size, $color) {
+    color: $color;
+    font-size: $size;
+    text-decoration: none;
+    font-weight: normal;
+    font-family: serif; 
+}
+@mixin drop() {
+    content: "";
+    display: block;
+    width: 12px;
+    height: 12px;
+    background-color: #ffffff;
+    position: absolute;
+    z-index: 1;
+    transform: rotate(45deg);
+    left: 90px;
+    top: -6px;
+    border-top: 1px solid #e8e8e8;
+    border-left: 1px solid #e8e8e8;
+}
+@mixin zoom() {
+    border: 5px solid #000;
+}
+@mixin shadow-drop {
+    -webkit-animation: shadow-drop-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: shadow-drop-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+@mixin button-hover-pink {
+    background-color: $select-color;
+    color: #ffffff;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.16);
+}
+@mixin shadow {
+    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.16);
+}
+@mixin button-hover {
+    background-color: #ffffff;
+    box-shadow: 0 0 0 1px $select-color;
+    color: $select-color
+}
+  
