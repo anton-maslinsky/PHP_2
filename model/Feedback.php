@@ -6,9 +6,14 @@ namespace app\model;
 
 class Feedback extends  DbModel
 {
-    public $id;
-    public $name;
-    public $feedback;
+    protected $id;
+    protected $name;
+    protected $feedback;
+
+    protected $props = [
+        'name' => false,
+        'feedback' => false
+    ];
 
     public function __construct($name = null, $feedback = null)
     {

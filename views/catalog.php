@@ -119,8 +119,8 @@
         <div class="product-box center">
             <div class="product-box__list">
                 <?php foreach ($catalog as $item):?>
-                    <div class="product">
-                        <a href="/?c=product&a=card&id=<?=$item['id']?>" class="product__img">
+                    <div class="product" id="catalogField">
+                        <a href="/product/card/?id=<?=$item['id']?>" class="product__img">
                             <img src="<?=IMAGES_DIR . $item['image'];?>" alt="img">
                         </a>
                         <div class="product__content">
@@ -132,22 +132,24 @@
                     </span>
                             </p>
                         </div>
-                        <a class="product__add" href="/?c=basket&a=add&id=<?=$item['id']?>">Add to Cart</a>
+                        <a class="product__add" href="/basket/add/?id=<?=$item['id']?>">Add to Cart</a>
                     </div>
                 <?php endforeach;?>
             </div>
         </div>
         <div class="main-content__pagination">
             <div class="pagination-button">
-                <a href="/?c=product&a=catalog&page=<?=$page?>">View more</a>
+                <a href="/product/catalog/?page=<?=$page?>">View more</a>
+
             </div>
+            <button class="showMore" id="showMore">Show more</button>
         </div>
     </div>
 </main>
 <div class="product-feature center">
     <div class="feature__box product-feature__box">
         <div class="feature__box__content">
-            <img src="img/icons/Forma_1.png" alt="icon">
+            <img src="/img/icons/Forma_1.png" alt="icon">
             <h2>Free Delivery</h2>
             <p>Worldwide delivery on&nbsp;all. Authorit tively morph next-generation innov tion with extensive models.</p>
         </div>
@@ -155,14 +157,14 @@
     </div>
     <div class="feature__box product-feature__box">
         <div class="feature__box__content">
-            <img src="img/icons/Forma_2.png" alt="icon">
+            <img src="/img/icons/Forma_2.png" alt="icon">
             <h2>Sales & discounts</h2>
             <p>Worldwide delivery on&nbsp;all. Authorit tively morph next-generation innov tion with extensive models.</p>
         </div>
     </div>
     <div class="feature__box product-feature__box">
         <div class="feature__box__content">
-            <img src="img/icons/Forma_3.png" alt="icon">
+            <img src="/img/icons/Forma_3.png" alt="icon">
             <h2>Quality assurance</h2>
             <p>Worldwide delivery on&nbsp;all. Authorit tively morph next-generation innov tion with extensive models.</p>
         </div>

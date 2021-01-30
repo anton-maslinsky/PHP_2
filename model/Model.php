@@ -8,7 +8,11 @@ use app\engine\Db;
 
 abstract class Model implements IModel
 {
+    protected $props =[];
+
     public function __set($name, $value) {
+
+        $this->props[$name] = true;
         $this->$name = $value;
     }
 

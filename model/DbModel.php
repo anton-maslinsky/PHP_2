@@ -10,17 +10,23 @@ abstract class DbModel extends Model
 {
     abstract public static function getTableName();
 
-//    public static function getLimit($page) {
-//        $tableName = static::getTableName();
-//        $sql = "SELECT * FROM {$tableName} LIMIT 0, ?";
-//        return Db::getInstance()->queryLimit($sql);
-//
-//    }
+    public static function getLimit($page) {
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName} LIMIT 0, ?";
+        return Db::getInstance()->queryLimit($sql, $page);
+    }
 
     public static function getWhere($field, $value) {
         $tableName = static::getTableName();
         $sql = "SELECT * FROM {$tableName}  WHERE {$field} = :value";
         return Db::getInstance()->queryAll($sql, ['value' => $value]);
+    }
+
+    public static function getObjectWhere($field, $value)
+    {
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName}  WHERE {$field} = :value ";
+        return Db::getInstance()->queryOneObject($sql, ['value'=> $value], static::class);
     }
 
     public static function getOne($id) {
@@ -35,19 +41,12 @@ abstract class DbModel extends Model
         return Db::getInstance()->queryAll($sql);
     }
 
-    public static function getBasket() {
-        $session_id = 1; // временное значение для проверки
-        $sql = "SELECT * FROM products AS p JOIN basket AS c ON p.id = c.product_id WHERE c.session_id = :session_id";
-        return Db::getInstance()->queryAll($sql, ['session_id' => $session_id]);
-    }
-
     public function insert() {
         $params = [];
         $columns = [];
 
-        foreach ($this as $key => $value) {
-            if ($key == 'id') continue;
-            $params[":{$key}"] = $value;
+        foreach ($this->props as $key => $value) {
+            $params[":{$key}"] = $this->$key;
             $columns[] = "$key";
         }
         $columns = implode(", ", $columns);
@@ -63,15 +62,20 @@ abstract class DbModel extends Model
         return $this;
     }
 
-    public function update($fieldName, $value) {
-
+    public function update() {
+        $params = [];
+        $columns = [];
+        foreach ($this->props as $key => $value) {
+            if (!$value) continue;
+            $params[":{$key}"] = $this->$key;
+            $columns[] .= "`{$key}` = :{$key}";
+            $this->props[$key] = false;
+        }
+        $columns = implode(", ", $columns);
+        $params['id'] = $this->id;
         $tableName = static::getTableName();
-
-        $sql = "UPDATE {$tableName} SET {$fieldName} = '{$value}' WHERE id = :id";
-
-        Db::getInstance()->execute($sql, ['id' => $this->id]);
-        $this->id = Db::getInstance()->lastInsertId();
-
+        $sql = "UPDATE `{$tableName}` SET {$columns} WHERE `id` = :id";
+        Db::getInstance()->execute($sql, $params);
         return $this;
     }
 

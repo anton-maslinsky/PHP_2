@@ -14,7 +14,7 @@
         <div class="shopping-cart__box__left">
             <div class="shopping-cart__box__left__img"><img style="width: 100px" src="<?=IMAGES_DIR . $item['image'];?>" alt=""></div>
             <div class="shopping-cart__box__description">
-                <a href="#"><?=$item['name']?></a>
+                <a href="/product/card/?id=<?=$item['product_id']?>"><?=$item['name']?></a>
                 <span>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>

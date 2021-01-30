@@ -42,23 +42,23 @@
         <p>Shop for items based on what we product in this week</p>
     </div>
     <div class="product-box__list">
-        <?php foreach ($catalog as $item):?>
-            <div class="product">
-                <a href="/product/card/?id=<?=$item['id']?>" class="product__img">
-                    <img src="<?=IMAGES_DIR . $item['image'];?>" alt="img">
-                </a>
-                <div class="product__content">
-                    <a href="#" class="product__name"><?=$item['name']?></a>
-                    <p class="product__price">$<?=$item['price']?><span class="product__star">
+        {% for item in catalog %}
+        <div class="product">
+            <a href="/product/card/?id={{ item.id }}" class="product__img">
+                <img src="/img/{{ item.image }}" alt="img">
+            </a>
+            <div class="product__content">
+                <a href="#" class="product__name">{{ item.name }}</a>
+                <p class="product__price">${{ item.price }}<span class="product__star">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </span>
-                    </p>
-                </div>
-                <a class="product__add" href="/basket/add/?id=<?=$item['id']?>">Add to Cart</a>
+                </p>
             </div>
-        <?php endforeach;?>
+            <a class="product__add" href="/basket/add/?id=<?=$item['id']?>">Add to Cart</a>
+        </div>
+        {% endfor %}
     </div>
     <div class="product__button"><a href="/product/catalog" class="product__button__link button">Browse All Product <i class="fas fa-long-arrow-alt-right"></i></a></div>
 </div>

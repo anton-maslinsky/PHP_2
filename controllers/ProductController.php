@@ -10,13 +10,13 @@ class ProductController extends Controller
 {
 
     public function actionIndex() {
-        echo $this->render('index');
+        echo $this->render('catalog');
     }
 
     public function actionCatalog() {
 
-        $page = $_GET['page'] ?? 0;
-        $catalog = Product::getAll();
+        $page = $_GET['page'] ?? 1;
+        $catalog = Product::getLimit($page * PRODUCT_DISPLAY_QTY);
 
         echo $this->render('catalog', [
             'catalog' => $catalog,

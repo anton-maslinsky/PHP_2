@@ -1,7 +1,7 @@
 <nav class="breadcrumbs center" aria-label="breadcrumb">
     <h2 class="breadcrumbs-title">New Arrivals</h2>
     <ol class="breadcrumbs-ol">
-        <li class="breadcrumb-ol__item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-ol__item"><a href="/">Home</a></li>
         <li class="breadcrumb-ol__item"><a href="#">Women</a></li>
         <li class="breadcrumb-ol__item breadcrumb-ol__item__active" aria-current="page">new arrivals</li>
     </ol>
