@@ -5,32 +5,51 @@ namespace app\controllers;
 
 
 
+use app\engine\Request;
 use app\model\Basket;
 use app\model\Product;
 
 class BasketController extends Controller
 {
+
     public function actionIndex() {
-        $basket = Basket::getBasket();
         echo $this->render('basket', [
-            'basket' => $basket
+            'basket' => Basket::getBasket(session_id())
         ]);
+
     }
 
-    public function actionAdd($id) {
+    public function actionAdd() {
 
-        $product = Product::save();
+//        $data = json_decode(file_get_contents("php://input"));
+//        $id = $data->id;
+
+        $id = (new Request())->getParams()['id'];
+
+        (new Basket(session_id(), $id))->save();
+        $response = [
+            'success' => 'ok',
+            'count' => Basket::getCountWhere('session_id', session_id())
+        ];
+
+        echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+
     }
 
-//    public function actionShow() {
-//
-//        $basket = Basket::getBasket();
-//        echo $this->render('basket', [
-//            'basket' => $basket
-//        ]);
-//    }
 
     public function actionDelete() {
+        $data = json_decode(file_get_contents("php://input"));
+        $id = $data->id;
 
+        $basket_item = Basket::getOne($id);
+
+        $basket_item->delete();
+
+        $response = [
+            'success' => 'ok',
+            'count' => Basket::getCountWhere('session_id', session_id())
+        ];
+
+        echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
 }

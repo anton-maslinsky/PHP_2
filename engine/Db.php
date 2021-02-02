@@ -48,6 +48,7 @@ class Db
 
     protected function query($sql, $params)
     {
+
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->execute($params);
         return $stmt;

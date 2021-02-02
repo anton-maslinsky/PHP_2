@@ -10,7 +10,7 @@
         </ul>
     </nav>
     <?php foreach ($basket as $item):?>
-    <div class="shopping-cart__box">
+    <div id="<?=$item['id']?>" class="shopping-cart__box">
         <div class="shopping-cart__box__left">
             <div class="shopping-cart__box__left__img"><img style="width: 100px" src="<?=IMAGES_DIR . $item['image'];?>" alt=""></div>
             <div class="shopping-cart__box__description">
@@ -34,7 +34,7 @@
                 <li><input type="number" placeholder="<?=$item['qty']?>"></li>
                 <li>FREE</li>
                 <li>$<?=$item['price'] * $item['qty']?></li>
-                <li><a href="#"><i class="fas fa-times-circle"></i></a></li>
+                <li><i data-id="<?=$item['id']?>" class="fas fa-times-circle delete-from-basket"></i></a></li>
             </ul>
         </div>
     </div>
@@ -75,3 +75,31 @@
         </div>
     </div>
 </main>
+<script>
+
+    let buttons = document.querySelectorAll('.delete-from-basket');
+
+    buttons.forEach((elem) => {
+        elem.addEventListener('click', () => {
+
+            let basket_id = elem.getAttribute('data-id');
+
+            (
+                async () => {
+                    const response = await fetch('/basket/delete/', {
+                        method: 'POST',
+                        headers: new Headers({
+                            'Content-Type': 'application/json'
+                        }),
+                        body: JSON.stringify({
+                            id: basket_id
+                        })
+                    })
+                    const answer = await response.json();
+                    document.getElementById('cartCount').innerText = answer.count;
+                    document.getElementById(basket_id).remove();
+                }
+            )();
+        })
+    });
+</script>

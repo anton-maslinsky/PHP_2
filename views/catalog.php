@@ -132,7 +132,15 @@
                     </span>
                             </p>
                         </div>
-                        <a class="product__add" href="/basket/add/?id=<?=$item['id']?>">Add to Cart</a>
+                        <div class="product__add">
+                            <button data-id="<?=$item['id']?>" class="product__add-button buy">Add to Cart</button>
+                        </div>
+
+<!--                        <a class="product__add" href="/basket/add/?id=--><?//=$item['id']?><!--">Add to Cart</a>-->
+<!--                        <form class="product__add" action="/basket/add/" method="post">-->
+<!--                            <input type="text" name="id" value="--><?//=$item['id']?><!--" hidden>-->
+<!--                            <button data-id="--><?//=$item['id']?><!--" class="product__add-button buy" type="submit">Add to Cart</button>-->
+<!--                        </form>-->
                     </div>
                 <?php endforeach;?>
             </div>
@@ -170,3 +178,31 @@
         </div>
     </div>
 </div>
+<script>
+
+    let buttons = document.querySelectorAll('.buy');
+
+    buttons.forEach((elem) => {
+
+        elem.addEventListener('click', () => {
+            let product_id = elem.getAttribute('data-id');
+
+            (
+                async () => {
+                    const response = await fetch('/basket/add/', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json;charset=utf-8'},
+                        body: JSON.stringify({
+                            id: product_id
+                        })
+                    });
+                    const answer = await response.json();
+                    console.log(answer);
+                    document.getElementById('cartCount').innerText = answer.count;
+                }
+                )();
+
+        });
+
+    });
+</script>

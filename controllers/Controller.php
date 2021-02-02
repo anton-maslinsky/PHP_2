@@ -6,6 +6,8 @@ namespace app\controllers;
 
 use app\engine\Render;
 use app\interfaces\IRenderer;
+use app\model\Basket;
+use app\model\User;
 
 class Controller
 {
@@ -30,7 +32,12 @@ class Controller
     public function render($template, $params = []) {
         if ($this->useLayout) {
             return $this->renderTemplate("layouts/{$this->defaultLayout}", [
-                'header' => $this->renderTemplate('header', $params),
+                'header' => $this->renderTemplate('header', [
+                    'auth' => User::isAuth(),
+                    'username' => User::getName(),
+                    'basket'=> Basket::getBasket(session_id()),
+                    'cartCount' => Basket::getCountWhere('session_id', session_id())
+                ]),
                 'menu' => $this->renderTemplate('menu', $params),
                 'content' => $this->renderTemplate($template, $params),
                 'footer' => $this->renderTemplate('footer', $params)

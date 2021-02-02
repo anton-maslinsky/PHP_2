@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-<!--    <link rel="stylesheet" href="/css/styles.css">-->
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://kit.fontawesome.com/77c5bff16b.js" crossorigin="anonymous"></script>
 <!--    <script src="/script/script.js"></script>-->

@@ -11,25 +11,27 @@ class Basket extends DbModel
     protected $id;
     protected $product_id;
     protected $session_id;
-    protected $qty;
+
 
     protected $props = [
       'product_id' => false,
-      'session_id' => false,
-      'qty' => false
+      'session_id' => false
     ];
 
-    public function __construct($product_id = null, $session_id = null, $qty = null)
+    public function __construct($session_id = null, $product_id = null)
     {
-        $this->product_id = $product_id;
         $this->session_id = $session_id;
-        $this->qty = $qty;
+        $this->product_id = $product_id;
     }
 
-    public static function getBasket() {
-        $session_id = 1; // временное значение для проверки
+    public static function getBasket($session_id) {
+
         $sql = "SELECT * FROM products AS p JOIN basket AS c ON p.id = c.product_id WHERE c.session_id = :session_id";
-        return Db::getInstance()->queryAll($sql, ['session_id' => $session_id]);
+        return Db::getInstance()->queryAll($sql, ['session_id' => $session_id ]);
+    }
+
+    public static function getCount() {
+
     }
 
     public static function getTableName()

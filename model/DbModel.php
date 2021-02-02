@@ -22,6 +22,18 @@ abstract class DbModel extends Model
         return Db::getInstance()->queryAll($sql, ['value' => $value]);
     }
 
+    public static function getCountWhere($field, $value) {
+        $tableName = static::getTableName();
+        $sql = "SELECT count(id) as count FROM {$tableName} WHERE {$field} = :value";
+        return Db::getInstance()->queryOne($sql, ['value' => $value])['count'];
+    }
+
+    public static function getOneWhere($field, $value) {
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName}  WHERE {$field} = :value";
+        return Db::getInstance()->queryOneObject($sql, ['value' => $value], static::class);
+    }
+
     public static function getObjectWhere($field, $value)
     {
         $tableName = static::getTableName();

@@ -33,15 +33,25 @@
         </form>
     </div>
     <div class="header__right">
-        <a href="/basket/show"><img class="header__cart" src="/img/cart.svg" alt="cart">
+        <?php if ($auth): ?>
+        <span>Привет: <?=$username?></span>
+         <a class="header__form__button" href="/auth/logout/">Выйти</a>
+        <?php else: ?>
+
+            <form class="header__form__auth" action="/auth/login/" method="post">
+                <input class="header__form__auth-input" width="30px" type="text" name="login" placeholder="Login">
+                <input class="header__form__auth-input" type="password" name="pass" placeholder="Password">
+                <input class="header__form__button" type="submit" name="submit" value="Enter">
+            </form>
+        <?php endif; ?>
+        <a class="cart-link" href="/basket/"><img class="header__cart" src="/img/cart.svg" alt="cart">
+            <div class="cartCount" id="cartCount"><?= $cartCount ?></div>
         </a>
         <details class="header__right__details">
             <summary class="button account-details">My Account</summary>
             <div class="drop-menu header-drop cart-drop">
-                <?php
-                use app\model\Basket;
-                $basket = Basket::getBasket();
-                foreach ($basket as $item):?>
+                <?php if (!empty($basket)): ?>
+                <?php foreach ($basket as $item):?>
                 <div class="drop-menu__box cart-drop__box">
                     <a href="/product/card/?id=<?=$item['id']?>"><img style="width: 100px" src="<?=IMAGES_DIR . $item['image'];?>" alt="img" class="cart-drop__img"></a>
                     <div class="cart-drop__box__content">
@@ -60,10 +70,16 @@
                     </div>
                 </div>
                 <?php endforeach;?>
-                <div class="drop-menu__box cart-drop__box total">
-                    <span>total</span>
-<!--                    <span>$500</span>-->
-                </div>
+                    <div class="drop-menu__box cart-drop__box total">
+                        <span>total</span>
+                        <!--                    <span>$500</span>-->
+                    </div>
+                <?php else: ?>
+                    <div class="drop-menu__box cart-drop__box total">
+                        <span>Корзина пуста</span>
+                    </div>
+                <?php endif; ?>
+
                 <div class="drop-menu__box cart-drop__box cart-button">
                     <a class="cart-button-red" href="/checkout">checkout</a>
                 </div>
