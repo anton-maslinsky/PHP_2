@@ -56,7 +56,10 @@
                     </span>
                     </p>
                 </div>
-                <a class="product__add" href="/basket/add/?id=<?=$item['id']?>">Add to Cart</a>
+
+                    <div data-id="<?=$item['id']?>" class="product__add buy">Add to Cart</div>
+
+<!--                <a data-id="--><?//=$item['id']?><!--" class="product__add .buy" href="">Add to Cart</a>-->
             </div>
         <?php endforeach;?>
     </div>
@@ -94,3 +97,31 @@
         </div>
     </div>
 </div>
+<script>
+
+    let buttons = document.querySelectorAll('.buy');
+
+    buttons.forEach((elem) => {
+
+        elem.addEventListener('click', () => {
+            let product_id = elem.getAttribute('data-id');
+
+            (
+                async () => {
+                    const response = await fetch('/basket/add/', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json;charset=utf-8'},
+                        body: JSON.stringify({
+                            id: product_id
+                        })
+                    });
+                    const answer = await response.json();
+                    console.log(answer);
+                    document.getElementById('cartCount').innerText = answer.count;
+                }
+            )();
+
+        });
+
+    });
+</script>

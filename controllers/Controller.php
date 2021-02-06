@@ -6,8 +6,9 @@ namespace app\controllers;
 
 use app\engine\Render;
 use app\interfaces\IRenderer;
-use app\model\Basket;
-use app\model\User;
+use app\model\repositories\BasketRepository;
+use app\model\repositories\UserRepository;
+
 
 class Controller
 {
@@ -33,10 +34,10 @@ class Controller
         if ($this->useLayout) {
             return $this->renderTemplate("layouts/{$this->defaultLayout}", [
                 'header' => $this->renderTemplate('header', [
-                    'auth' => User::isAuth(),
-                    'username' => User::getName(),
-                    'basket'=> Basket::getBasket(session_id()),
-                    'cartCount' => Basket::getCountWhere('session_id', session_id())
+                    'auth' => (new UserRepository())->isAuth(),
+                    'username' => (new UserRepository())->getName(),
+                    'basket'=> (new BasketRepository())->getBasket(session_id()),
+                    'cartCount' => (new BasketRepository())->getCountWhere('session_id', session_id())
                 ]),
                 'menu' => $this->renderTemplate('menu', $params),
                 'content' => $this->renderTemplate($template, $params),

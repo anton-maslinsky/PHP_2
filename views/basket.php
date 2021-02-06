@@ -10,6 +10,7 @@
         </ul>
     </nav>
     <?php foreach ($basket as $item):?>
+
     <div id="<?=$item['id']?>" class="shopping-cart__box">
         <div class="shopping-cart__box__left">
             <div class="shopping-cart__box__left__img"><img style="width: 100px" src="<?=IMAGES_DIR . $item['image'];?>" alt=""></div>
@@ -31,9 +32,12 @@
         <div class="shopping-cart__box__right">
             <ul class="shopping-cart__box__list">
                 <li>$<?=$item['price']?></li>
-                <li><input type="number" placeholder="<?=$item['qty']?>"></li>
+                <li><input type="number" placeholder="1">
+<!--                    <div data-id="--><?//=$item['id']?><!--" class="increment">+</div>-->
+<!--                    <div>-</div>-->
+                </li>
                 <li>FREE</li>
-                <li>$<?=$item['price'] * $item['qty']?></li>
+                <li>$<?=$item['price']?></li>
                 <li><i data-id="<?=$item['id']?>" class="fas fa-times-circle delete-from-basket"></i></a></li>
             </ul>
         </div>
@@ -98,6 +102,32 @@
                     const answer = await response.json();
                     document.getElementById('cartCount').innerText = answer.count;
                     document.getElementById(basket_id).remove();
+                }
+            )();
+        })
+    });
+
+    let buttons_incr = document.querySelectorAll('.increment');
+
+    buttons.forEach((elem) => {
+        elem.addEventListener('click', () => {
+
+            let basket_id = elem.getAttribute('data-id');
+
+            (
+                async () => {
+                    const response = await fetch('/basket/delete/', {
+                        method: 'POST',
+                        headers: new Headers({
+                            'Content-Type': 'application/json'
+                        }),
+                        body: JSON.stringify({
+                            id: basket_id
+                        })
+                    })
+                    const answer = await response.json();
+                    document.getElementById('cartCount').innerText = answer.count;
+                    // document.getElementById(basket_id).remove();
                 }
             )();
         })

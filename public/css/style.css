@@ -2548,5 +2548,11 @@ main .main-content__pagination .pagination__page__link:hover {
 
 .buy {
     z-index: 1;
+    cursor: pointer;
+}
+
+.buy-text {
+    display: block;
+    cursor: pointer;
 }
 /*# sourceMappingURL=style.css.map */

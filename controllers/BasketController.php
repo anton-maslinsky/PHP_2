@@ -6,50 +6,53 @@ namespace app\controllers;
 
 
 use app\engine\Request;
-use app\model\Basket;
-use app\model\Product;
+use app\model\entities\Basket;
+use app\model\repositories\BasketRepository;
+
 
 class BasketController extends Controller
 {
 
     public function actionIndex() {
         echo $this->render('basket', [
-            'basket' => Basket::getBasket(session_id())
+            'basket' => (new BasketRepository())->getBasket(session_id())
         ]);
 
     }
 
     public function actionAdd() {
 
-//        $data = json_decode(file_get_contents("php://input"));
-//        $id = $data->id;
-
         $id = (new Request())->getParams()['id'];
 
-        (new Basket(session_id(), $id))->save();
+//        (new Basket(session_id(), $id))->save();
+        $basket = new Basket(session_id(), $id);
+        (new BasketRepository())->save($basket);
+
         $response = [
             'success' => 'ok',
-            'count' => Basket::getCountWhere('session_id', session_id())
+            'count' => (new BasketRepository())->getCountWhere('session_id', session_id())
         ];
 
         echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
     }
-
 
     public function actionDelete() {
-        $data = json_decode(file_get_contents("php://input"));
-        $id = $data->id;
 
-        $basket_item = Basket::getOne($id);
+        $id = (new Request())->getParams()['id'];
+        $basket_item = (new BasketRepository())->getOne($id);
 
-        $basket_item->delete();
+        if ($basket_item->session_id == session_id()) {
+            (new BasketRepository())->delete($basket_item);
+        }
 
         $response = [
             'success' => 'ok',
-            'count' => Basket::getCountWhere('session_id', session_id())
+            'count' => (new BasketRepository())->getCountWhere('session_id', session_id())
         ];
 
         echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+
     }
+
 }

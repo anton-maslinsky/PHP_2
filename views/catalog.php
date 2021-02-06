@@ -132,9 +132,7 @@
                     </span>
                             </p>
                         </div>
-                        <div class="product__add">
-                            <button data-id="<?=$item['id']?>" class="product__add-button buy">Add to Cart</button>
-                        </div>
+                        <div data-id="<?=$item['id']?>" class="product__add buy"><span class="buy-text">Add to Cart</span></div>
 
 <!--                        <a class="product__add" href="/basket/add/?id=--><?//=$item['id']?><!--">Add to Cart</a>-->
 <!--                        <form class="product__add" action="/basket/add/" method="post">-->

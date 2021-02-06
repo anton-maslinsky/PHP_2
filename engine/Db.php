@@ -72,6 +72,11 @@ class Db
         $stmt = $this->query($sql, $params);
         $stmt->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $class);
         return $stmt->fetch();
+//        $obj = $stmt->fetch();
+//        if (!$obj) {
+//            throw new \Exception("Product not exists...", 404);
+//        }
+//        return $obj;
     }
 
     public function queryAll($sql, $params = [])

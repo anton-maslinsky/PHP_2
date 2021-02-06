@@ -1,10 +1,12 @@
 <?php
 
 
-namespace app\model;
+namespace app\model\entities;
 
 
-class Orders extends DbModel
+use app\model\Model;
+
+class Orders extends Model
 {
     protected $id;
     protected $user_name;
@@ -27,9 +29,4 @@ class Orders extends DbModel
         $this->status = $status;
     }
 
-
-    public static function getTableName()
-    {
-        return 'orders';
-    }
 }

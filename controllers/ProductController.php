@@ -3,8 +3,7 @@
 
 namespace app\controllers;
 
-
-use app\model\Product;
+use app\model\repositories\ProductRepository;
 
 class ProductController extends Controller
 {
@@ -16,7 +15,7 @@ class ProductController extends Controller
     public function actionCatalog() {
 
         $page = $_GET['page'] ?? 1;
-        $catalog = Product::getLimit($page * PRODUCT_DISPLAY_QTY);
+        $catalog = (new ProductRepository())->getLimit($page * PRODUCT_DISPLAY_QTY);
 
         echo $this->render('catalog', [
             'catalog' => $catalog,
@@ -28,7 +27,7 @@ class ProductController extends Controller
 
         $id = $_GET['id'];
 
-        $item = Product::getOne($id);
+        $item = (new ProductRepository())->getOne($id);
 
         echo $this->render('card', [
             'item' => $item
