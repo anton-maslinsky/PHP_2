@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Янв 26 2021 г., 17:35
+-- Время создания: Фев 02 2021 г., 23:19
 -- Версия сервера: 8.0.19
 -- Версия PHP: 7.4.5
 
@@ -29,17 +29,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `basket` (
   `id` int NOT NULL,
-  `product_id` int NOT NULL,
-  `session_id` varchar(255) NOT NULL,
-  `qty` int NOT NULL
+  `session_id` text NOT NULL,
+  `product_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Дамп данных таблицы `basket`
---
-
-INSERT INTO `basket` (`id`, `product_id`, `session_id`, `qty`) VALUES
-(1, 2, '1', 1);
 
 -- --------------------------------------------------------
 
@@ -90,10 +82,14 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `image`) VALUES
 (2, 'Блузка', 'Блузка красная. Шёлковая.', 1900, 'product_2.png'),
 (3, 'Куртка', 'Куртка мужская. Осень - зима', 2890, 'product_3.png'),
 (4, 'Платье', 'Платье летнее', 1300, 'product_4.png'),
-(5, 'Платье', 'Платье офисное', 1890, 'product_5.png'),
+(5, 'Платье', 'Платье офисное', 1980, 'product_5.png'),
 (6, 'Пиджак', 'Пиджак мужской. Серый.', 3450, 'product_6.png'),
 (7, 'Штаны', 'Штаны подростковые', 1200, 'product_7.png'),
-(8, 'Кофта', 'Кофта мужская с капюшоном', 990, 'product_8.png');
+(8, 'Кофта', 'Кофта мужская с капюшоном', 990, 'product_8.png'),
+(9, 'Пиджак', 'Пиджак мужской. Серый.', 3450, 'product_6.png'),
+(10, 'Блузка', 'Блузка красная. Шёлковая.', 1900, 'product_2.png'),
+(11, 'Платье', 'Платье летнее', 1300, 'product_4.png'),
+(12, 'Штаны', 'Штаны подростковые', 1200, 'product_7.png');
 
 -- --------------------------------------------------------
 
@@ -104,20 +100,16 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `image`) VALUES
 CREATE TABLE `users` (
   `id` int NOT NULL,
   `login` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `pass` varchar(255) NOT NULL
+  `pass` varchar(255) NOT NULL,
+  `hash` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `pass`) VALUES
-(1, 'admin', '123'),
-(2, 'Alex', '123'),
-(3, 'Mike', '43434'),
-(4, 'Mike', '43434'),
-(7, 'Anton', '99991'),
-(8, 'Max', '99991');
+INSERT INTO `users` (`id`, `login`, `pass`, `hash`) VALUES
+(1, 'admin', '$2y$10$5AASCffuhoGoK1GnRVGTquO5u9hLj87sVC7ubEMuECkXm.2Z1uYv6', '');
 
 --
 -- Индексы сохранённых таблиц
@@ -155,7 +147,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `basket`
 --
 ALTER TABLE `basket`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT для таблицы `orders`
@@ -167,7 +159,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT для таблицы `users`

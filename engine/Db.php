@@ -48,6 +48,7 @@ class Db
 
     protected function query($sql, $params)
     {
+
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->execute($params);
         return $stmt;
@@ -59,8 +60,11 @@ class Db
     }
 
     public function queryLimit($sql, $page) {
+        $params = [];
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->bindValue(1, $page, \PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     public function queryOneObject($sql, $params, $class)
@@ -68,6 +72,11 @@ class Db
         $stmt = $this->query($sql, $params);
         $stmt->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $class);
         return $stmt->fetch();
+//        $obj = $stmt->fetch();
+//        if (!$obj) {
+//            throw new \Exception("Product not exists...", 404);
+//        }
+//        return $obj;
     }
 
     public function queryAll($sql, $params = [])

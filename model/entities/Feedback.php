@@ -1,14 +1,21 @@
 <?php
 
 
-namespace app\model;
+namespace app\model\entities;
 
 
-class Feedback extends  DbModel
+use app\model\Model;
+
+class Feedback extends Model
 {
-    public $id;
-    public $name;
-    public $feedback;
+    protected $id;
+    protected $name;
+    protected $feedback;
+
+    protected $props = [
+        'name' => false,
+        'feedback' => false
+    ];
 
     public function __construct($name = null, $feedback = null)
     {

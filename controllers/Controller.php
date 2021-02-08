@@ -4,12 +4,23 @@
 namespace app\controllers;
 
 
+use app\engine\Render;
+use app\interfaces\IRenderer;
+use app\model\repositories\BasketRepository;
+use app\model\repositories\UserRepository;
+
+
 class Controller
 {
     private $action;
     private $defaultAction = 'index';
     private $defaultLayout = 'main';
     private $useLayout = true;
+    private $renderer;
+
+    public function __construct(IRenderer $renderer) {
+        $this->renderer = $renderer;
+    }
 
     public function runAction($action = null) {
         $this->action = $action ?: $this->defaultAction;
@@ -22,7 +33,12 @@ class Controller
     public function render($template, $params = []) {
         if ($this->useLayout) {
             return $this->renderTemplate("layouts/{$this->defaultLayout}", [
-                'header' => $this->renderTemplate('header', $params),
+                'header' => $this->renderTemplate('header', [
+                    'auth' => (new UserRepository())->isAuth(),
+                    'username' => (new UserRepository())->getName(),
+                    'basket'=> (new BasketRepository())->getBasket(session_id()),
+                    'cartCount' => (new BasketRepository())->getCountWhere('session_id', session_id())
+                ]),
                 'menu' => $this->renderTemplate('menu', $params),
                 'content' => $this->renderTemplate($template, $params),
                 'footer' => $this->renderTemplate('footer', $params)
@@ -33,19 +49,7 @@ class Controller
     }
 
     public function renderTemplate($template, $params = []) {
-
-        ob_start();
-
-        extract($params);
-
-        $templatePath = TEMPLATES_DIR . $template . ".php";
-
-        if (file_exists($templatePath)) {
-            include $templatePath;
-        }
-
-        return ob_get_clean();
-
+        return $this->renderer->renderTemplate($template, $params);
     }
 
 }
