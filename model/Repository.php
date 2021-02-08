@@ -3,9 +3,8 @@
 
 namespace app\model;
 
-
-use app\engine\Db;
 use app\interfaces\IModel;
+use app\engine\App;
 
 abstract class Repository implements IModel
 {
@@ -13,44 +12,45 @@ abstract class Repository implements IModel
     public function getLimit($page) {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} LIMIT 0, ?";
-        return Db::getInstance()->queryLimit($sql, $page);
+        return App::call()->db->queryLimit($sql, $page);
     }
 
     public function getWhere($field, $value) {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName}  WHERE {$field} = :value";
-        return Db::getInstance()->queryAll($sql, ['value' => $value]);
+        return App::call()->db->queryAll($sql, ['value' => $value]);
     }
+
 
     public function getCountWhere($field, $value) {
         $tableName = $this->getTableName();
         $sql = "SELECT count(id) as count FROM {$tableName} WHERE {$field} = :value";
-        return Db::getInstance()->queryOne($sql, ['value' => $value])['count'];
+        return App::call()->db->queryOne($sql, ['value' => $value])['count'];
     }
 
     public function getOneWhere($field, $value) {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName}  WHERE {$field} = :value";
-        return Db::getInstance()->queryOneObject($sql, ['value' => $value], $this->getEntityClass());
+        return App::call()->db->queryOneObject($sql, ['value' => $value], $this->getEntityClass());
     }
 
     public function getObjectWhere($field, $value)
     {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName}  WHERE {$field} = :value ";
-        return Db::getInstance()->queryOneObject($sql, ['value'=> $value], $this->getEntityClass());
+        return App::call()->db->queryOneObject($sql, ['value'=> $value], $this->getEntityClass());
     }
 
     public function getOne($id) {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
-        return Db::getInstance()->queryOneObject($sql, ['id' => $id], $this->getEntityClass());
+        return App::call()->db->queryOneObject($sql, ['id' => $id], $this->getEntityClass());
     }
 
     public function getAll() {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName}";
-        return Db::getInstance()->queryAll($sql);
+        return App::call()->db->queryAll($sql);
     }
 
     public function insert(Model $entity) {
@@ -67,9 +67,9 @@ abstract class Repository implements IModel
 
         $sql = "INSERT INTO {$tableName} ({$columns}) VALUES ({$values})";
 
-        Db::getInstance()->execute($sql, $params);
+        App::call()->db->execute($sql, $params);
 
-        $entity->id = Db::getInstance()->lastInsertId();
+        $entity->id = App::call()->db->lastInsertId();
 
 //        return $this;
     }
@@ -87,14 +87,14 @@ abstract class Repository implements IModel
         $params['id'] = $entity->id;
         $tableName = $this->getTableName();
         $sql = "UPDATE `{$tableName}` SET {$columns} WHERE `id` = :id";
-        Db::getInstance()->execute($sql, $params);
+        App::call()->db->execute($sql, $params);
 
     }
 
     public function delete(Model $entity) {
         $tableName = $this->getTableName();
         $sql = "DELETE FROM {$tableName} WHERE id = :id";
-        return Db::getInstance()->execute($sql, ['id' => $entity->id]);
+        return App::call()->db->execute($sql, ['id' => $entity->id]);
     }
 
     public function save(Model $entity) {
@@ -106,5 +106,23 @@ abstract class Repository implements IModel
     }
     abstract protected function getEntityClass();
     abstract protected function getTableName();
+
+    public function increment($id) {
+        $tableName = $this->getTableName();
+        $sql = "UPDATE `{$tableName}` SET `qty` = qty + 1 WHERE `id` = :id";
+        return App::call()->db->execute($sql, ['id' => $id]);
+    }
+
+    public function decrement($id) {
+        $tableName = $this->getTableName();
+        $sql = "UPDATE `{$tableName}` SET `qty` = qty - 1 WHERE `id` = :id";
+        return App::call()->db->execute($sql, ['id' => $id]);
+    }
+
+    public function getQty($field, $value) {
+        $tableName = $this->getTableName();
+        $sql = "SELECT `qty` FROM {$tableName}  WHERE {$field} = :value";
+        return App::call()->db->queryOneColumn($sql, ['value' => $value]);
+    }
 
 }

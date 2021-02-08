@@ -13,7 +13,7 @@
 
     <div id="<?=$item['id']?>" class="shopping-cart__box">
         <div class="shopping-cart__box__left">
-            <div class="shopping-cart__box__left__img"><img style="width: 100px" src="<?=IMAGES_DIR . $item['image'];?>" alt=""></div>
+            <div class="shopping-cart__box__left__img"><img style="width: 100px" src="<?=\app\engine\App::call()->config['images_dir'] . $item['image'];?>" alt=""></div>
             <div class="shopping-cart__box__description">
                 <a href="/product/card/?id=<?=$item['product_id']?>"><?=$item['name']?></a>
                 <span>
@@ -32,13 +32,12 @@
         <div class="shopping-cart__box__right">
             <ul class="shopping-cart__box__list">
                 <li>$<?=$item['price']?></li>
-                <li><input type="number" placeholder="1">
-<!--                    <div data-id="--><?//=$item['id']?><!--" class="increment">+</div>-->
-<!--                    <div>-</div>-->
-                </li>
+                <i data-id="<?=$item['id']?>" class="fas fa-minus decrement"></i>
+                <li id="<?=$item['id']?>_qty" "><?=$item['qty']?></li>
+                <i data-id="<?=$item['id']?>" class="fas fa-plus increment"></i>
                 <li>FREE</li>
-                <li>$<?=$item['price']?></li>
-                <li><i data-id="<?=$item['id']?>" class="fas fa-times-circle delete-from-basket"></i></a></li>
+                <li>$<span id="<?=$item['id']?>_subtotal"><?=$item['price'] * $item['qty']?></span></li>
+                <li><i data-id="<?=$item['id']?>" class="fas fa-times-circle delete-from-basket"></i></li>
             </ul>
         </div>
     </div>
@@ -109,14 +108,15 @@
 
     let buttons_incr = document.querySelectorAll('.increment');
 
-    buttons.forEach((elem) => {
+    buttons_incr.forEach((elem) => {
         elem.addEventListener('click', () => {
 
             let basket_id = elem.getAttribute('data-id');
 
+
             (
                 async () => {
-                    const response = await fetch('/basket/delete/', {
+                    const response = await fetch('/basket/increment/', {
                         method: 'POST',
                         headers: new Headers({
                             'Content-Type': 'application/json'
@@ -127,7 +127,40 @@
                     })
                     const answer = await response.json();
                     document.getElementById('cartCount').innerText = answer.count;
-                    // document.getElementById(basket_id).remove();
+                    document.getElementById('<?=$item['id']?>_qty').innerText = answer.qty;
+                    document.getElementById('<?=$item['id']?>_subtotal').innerText = answer.subtotal;
+                }
+            )();
+        })
+    });
+
+    let buttons_decr = document.querySelectorAll('.decrement');
+
+    buttons_decr.forEach((elem) => {
+        elem.addEventListener('click', () => {
+
+            let basket_id = elem.getAttribute('data-id');
+
+
+            (
+                async () => {
+                    const response = await fetch('/basket/decrement/', {
+                        method: 'POST',
+                        headers: new Headers({
+                            'Content-Type': 'application/json'
+                        }),
+                        body: JSON.stringify({
+                            id: basket_id
+                        })
+                    })
+                    const answer = await response.json();
+                    document.getElementById('cartCount').innerText = answer.count;
+                    if(answer.qty == 0) {
+                        document.getElementById(basket_id).remove();
+                    } else {
+                        document.getElementById('<?=$item['id']?>_qty').innerText = answer.qty;
+                        document.getElementById('<?=$item['id']?>_subtotal').innerText = answer.subtotal;
+                    }
                 }
             )();
         })

@@ -9,7 +9,7 @@
 <div class="single-page">
     <div class="single-page__slider">
         <a class="angle-left" href="#"><i class="fas fa-angle-left"></i></a>
-        <img src="<?=IMAGES_DIR . $item->image;?>" alt="img">
+        <img src="<?=\app\engine\App::call()->config['images_dir'] . $item->image;?>" alt="img">
         <a class="angle-right" href="#"><i class="fas fa-angle-right"></i></a>
     </div>
     <div class="product-description">

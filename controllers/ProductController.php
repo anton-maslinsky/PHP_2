@@ -3,31 +3,36 @@
 
 namespace app\controllers;
 
+use app\engine\App;
 use app\model\repositories\ProductRepository;
 
 class ProductController extends Controller
 {
 
     public function actionIndex() {
+
         echo $this->render('catalog');
     }
 
     public function actionCatalog() {
 
-        $page = $_GET['page'] ?? 1;
-        $catalog = (new ProductRepository())->getLimit($page * PRODUCT_DISPLAY_QTY);
+        $page = App::call()->request->getParams()['page'] ?? 1;
+        $isAdmin = App::call()->userRepository->isAdmin();
+
+        $catalog = App::call()->productRepository->getLimit($page * App::call()->config['product_display_qty']);
 
         echo $this->render('catalog', [
             'catalog' => $catalog,
-            'page' => ++$page
+            'page' => ++$page,
+            'isAdmin' => $isAdmin
         ]);
     }
 
     public function actionCard() {
 
-        $id = $_GET['id'];
+        $id = App::call()->request->getParams()['id'];
 
-        $item = (new ProductRepository())->getOne($id);
+        $item = App::call()->productRepository->getOne($id);
 
         echo $this->render('card', [
             'item' => $item
