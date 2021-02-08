@@ -43,6 +43,7 @@
                 <input class="header__form__auth-input" type="password" name="pass" placeholder="Password">
                 <input class="header__form__button" type="submit" name="submit" value="Enter">
             </form>
+            <a class="header__form__button" href="/auth/reg/">Register</a>
         <?php endif; ?>
         <a class="cart-link" href="/basket/"><img class="header__cart" src="/img/cart.svg" alt="cart">
             <div class="cartCount" id="cartCount"><?= $cartCount ?></div>
@@ -53,7 +54,7 @@
                 <?php if (!empty($basket)): ?>
                 <?php foreach ($basket as $item):?>
                 <div class="drop-menu__box cart-drop__box">
-                    <a href="/product/card/?id=<?=$item['id']?>"><img style="width: 100px" src="<?=IMAGES_DIR . $item['image'];?>" alt="img" class="cart-drop__img"></a>
+                    <a href="/product/card/?id=<?=$item['id']?>"><img style="width: 100px" src="<?=\app\engine\App::call()->config['images_dir'] . $item['image'];?>" alt="img" class="cart-drop__img"></a>
                     <div class="cart-drop__box__content">
                         <span><?=$item['name']?></span>
                         <span>

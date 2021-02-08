@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 
+use app\engine\App;
 use app\engine\Render;
 use app\interfaces\IRenderer;
 use app\model\repositories\BasketRepository;
@@ -35,6 +36,7 @@ class Controller
             return $this->renderTemplate("layouts/{$this->defaultLayout}", [
                 'header' => $this->renderTemplate('header', [
                     'auth' => (new UserRepository())->isAuth(),
+                    'isAdmin' => (new UserRepository())->isAdmin(),
                     'username' => (new UserRepository())->getName(),
                     'basket'=> (new BasketRepository())->getBasket(session_id()),
                     'cartCount' => (new BasketRepository())->getCountWhere('session_id', session_id())

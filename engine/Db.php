@@ -2,22 +2,22 @@
 
 namespace app\engine;
 
-use app\traits\TSingletone;
 
 class Db
 {
-    private $config = [
-        'driver' => 'mysql',
-        'host' => 'localhost:3306',
-        'login' => 'root',
-        'password' => 'root',
-        'database' => 'shop',
-        'charset' => 'utf8'
-    ];
-
-    use TSingletone;
+    private $config;
 
     protected $connection = null; //PDO
+
+    public function __construct($driver, $host, $login, $password, $database, $charset = "utf8")
+    {
+        $this->config['driver'] = $driver;
+        $this->config['host'] = $host;
+        $this->config['login'] = $login;
+        $this->config['password'] = $password;
+        $this->config['database'] = $database;
+        $this->config['charset'] = $charset;
+    }
 
     protected function getConnection()
     {
@@ -57,6 +57,11 @@ class Db
     public function queryOne($sql, $params)
     {
         return $this->query($sql, $params)->fetch();
+    }
+
+    public function queryOneColumn($sql, $params)
+    {
+        return $this->query($sql, $params)->fetchColumn();
     }
 
     public function queryLimit($sql, $page) {
