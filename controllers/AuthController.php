@@ -17,7 +17,12 @@ class AuthController extends Controller
         $pass = App::call()->request->getParams()['pass'];
 
         if (App::call()->userRepository->auth($login, $pass)) {
-            header("Location:" . $_SERVER['HTTP_REFERER']);
+            if (App::call()->userRepository->isAdmin()) {
+                header("Location: /admin/");
+            } else {
+                header("Location:" . $_SERVER['HTTP_REFERER']);
+            }
+
         } else {
             die("Wrong login or password...");
         }
@@ -25,7 +30,7 @@ class AuthController extends Controller
 
     public function actionLogout() {
         App::call()->session->destroySession();
-        header("Location:" . $_SERVER['HTTP_REFERER']);
+        header("Location: /");
     }
 
     public function actionReg() {

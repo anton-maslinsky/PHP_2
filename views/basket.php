@@ -9,9 +9,11 @@
             <li>ACTION</li>
         </ul>
     </nav>
+    <p class="order-message"><?=$message?></p>
+    <?php if($basket): ?>
     <?php foreach ($basket as $item):?>
-
     <div id="<?=$item['id']?>" class="shopping-cart__box">
+
         <div class="shopping-cart__box__left">
             <div class="shopping-cart__box__left__img"><img style="width: 100px" src="<?=\app\engine\App::call()->config['images_dir'] . $item['image'];?>" alt=""></div>
             <div class="shopping-cart__box__description">
@@ -42,41 +44,34 @@
         </div>
     </div>
     <?php endforeach;?>
+    <?php endif; ?>
     <div class="shopping-cart__actions">
         <div class="shopping-cart__button"><a href="#">cLEAR SHOPPING CART</a></div>
         <div class="shopping-cart__button"><a href="#">cONTINUE sHOPPING</a></div>
     </div>
-    <div class="shopping-cart__form">
+    <form class="shopping-cart__form" action="/orders/create/" method="post">
         <div class="shopping-cart__form__box shopping-cart__form__box__left">
-            <h2>Shipping Adress</h2>
-            <form action="#">
-                <details>
-                    <summary>Bangladesh</summary>
-                </details>
-                <input type="text" name="State" id="State" placeholder="State">
-                <input type="text" name="Postcode" id="Postcode" placeholder="Postcode / Zip">
-                <button type="submit">get a quote</button>
-            </form>
+            <h2>Shipping details</h2>
+            <div>
+                <input type="text" name="name" id="name" placeholder="Your name" required>
+                <input type="phone" name="phone" id="phone" placeholder="Your phone number" required>
+                <button>get a quote</button>
+            </div>
         </div>
-        <div class="shopping-cart__form__box shopping-cart__form__box__center">
-            <h2>coupon discount</h2>
-            <p>Enter your coupon code if you have one</p>
-            <form action="#">
-                <details>
-                    <summary>Bangladesh</summary>
-                </details>
-                <input type="text" name="State" id="State1" placeholder="State">
-                <button type="submit">Apply coupon</button>
-            </form>
+        <div class="shopping-cart__form__box shopping-cart__form__box__left">
+            <h2>contacts</h2>
+            <div >
+                <input type="text" name="address" id="address" placeholder="Address">
+                <input type="email" name="email" id="email" placeholder="Your email" required>
+                <button>Apply coupon</button>
+            </div>
         </div>
         <div class="shopping-cart__form__box shopping-cart__form__box__right">
-            <h2>Sub total <span>$900</span></h2>
-            <p>GRAND TOTAL <span>$900</span></p>
-            <form action="#">
-                <button type="submit">Apply coupon</button>
-            </form>
+            <h2><span></span></h2>
+            <p>TOTAL SUM: <span>$<span id="total_sum"><?=$totalSum ?></span></span></p>
+                <button type="submit">Make order</button>
         </div>
-    </div>
+    </form>
 </main>
 <script>
 
@@ -129,6 +124,7 @@
                     document.getElementById('cartCount').innerText = answer.count;
                     document.getElementById('<?=$item['id']?>_qty').innerText = answer.qty;
                     document.getElementById('<?=$item['id']?>_subtotal').innerText = answer.subtotal;
+                    document.getElementById('total_sum').innerText = answer.totalSum;
                 }
             )();
         })
@@ -160,6 +156,7 @@
                     } else {
                         document.getElementById('<?=$item['id']?>_qty').innerText = answer.qty;
                         document.getElementById('<?=$item['id']?>_subtotal').innerText = answer.subtotal;
+                        document.getElementById('total_sum').innerText = answer.totalSum;
                     }
                 }
             )();

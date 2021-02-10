@@ -35,4 +35,10 @@ class BasketRepository extends Repository
         $sql = "SELECT `price` FROM products AS p JOIN basket AS b ON p.id = b.product_id WHERE b.id = :id";
         return App::call()->db->queryOneColumn($sql, ['id' => $id]);
     }
+
+    public function getTotalSum($session_id) {
+        $sql = "SELECT SUM(b.qty * p.price) as total FROM basket AS b JOIN products AS p ON b.product_id = p.id WHERE b.session_id = :session_id";
+        return App::call()->db->queryOneColumn($sql, ['session_id' => $session_id]);
+
+    }
 }

@@ -16,10 +16,14 @@ class BasketController extends Controller
 
     public function actionIndex() {
         $isAdmin = App::call()->userRepository->isAdmin();
+        $totalSum = App::call()->basketRepository->getTotalSum(session_id());
+        $message = "";
 
         echo $this->render('basket', [
             'basket' => App::call()->basketRepository->getBasket(session_id()),
-            'isAdmin' => $isAdmin
+            'isAdmin' => $isAdmin,
+            'totalSum' => $totalSum,
+            'message' => $message
         ]);
 
     }
@@ -76,7 +80,8 @@ class BasketController extends Controller
         $response = [
             'success' => 'ok',
             'qty' => $qty,
-            'subtotal' => $price * $qty
+            'subtotal' => $price * $qty,
+            'totalSum' => App::call()->basketRepository->getTotalSum(session_id())
         ];
 
         echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
@@ -113,7 +118,8 @@ class BasketController extends Controller
         $response = [
             'success' => 'ok',
             'qty' => $qty,
-            'subtotal' => $price * $qty
+            'subtotal' => $price * $qty,
+            'totalSum' => App::call()->basketRepository->getTotalSum(session_id())
         ];
 
         echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
