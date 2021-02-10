@@ -2,7 +2,7 @@
 
 namespace app\model\repositories;
 
-use app\engine\Db;
+use app\engine\App;
 use app\model\entities\Basket;
 use app\model\Repository;
 
@@ -21,6 +21,24 @@ class BasketRepository extends Repository
     public function getBasket($session_id) {
 
         $sql = "SELECT * FROM products AS p JOIN basket AS c ON p.id = c.product_id WHERE c.session_id = :session_id";
-        return Db::getInstance()->queryAll($sql, ['session_id' => $session_id ]);
+        return App::call()->db->queryAll($sql, ['session_id' => $session_id ]);
+    }
+
+    public function getIdWhere($session_id, $product_id) {
+        $tableName = $this->getTableName();
+        $sql = "SELECT `id` FROM {$tableName}  WHERE `session_id` = :session_id AND `product_id` = :product_id" ;
+        return App::call()->db->queryOneColumn($sql, ['session_id' => $session_id, 'product_id' => $product_id]);
+    }
+
+    public function getPrice($id) {
+
+        $sql = "SELECT `price` FROM products AS p JOIN basket AS b ON p.id = b.product_id WHERE b.id = :id";
+        return App::call()->db->queryOneColumn($sql, ['id' => $id]);
+    }
+
+    public function getTotalSum($session_id) {
+        $sql = "SELECT SUM(b.qty * p.price) as total FROM basket AS b JOIN products AS p ON b.product_id = p.id WHERE b.session_id = :session_id";
+        return App::call()->db->queryOneColumn($sql, ['session_id' => $session_id]);
+
     }
 }

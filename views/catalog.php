@@ -121,7 +121,7 @@
                 <?php foreach ($catalog as $item):?>
                     <div class="product" id="catalogField">
                         <a href="/product/card/?id=<?=$item['id']?>" class="product__img">
-                            <img src="<?=IMAGES_DIR . $item['image'];?>" alt="img">
+                            <img src="<?=\app\engine\App::call()->config['images_dir'] . $item['image'];?>" alt="img">
                         </a>
                         <div class="product__content">
                             <a href="#" class="product__name"><?=$item['name']?></a>

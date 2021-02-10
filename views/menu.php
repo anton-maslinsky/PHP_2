@@ -222,5 +222,11 @@
                 </div>
             </div>
         </li>
+
+        <?php if ($isAdmin) :?>
+        <li class="menu__list menu__hot__deals">
+            <a href="/admin" class="menu__link">Admin</a>
+        </li>
+        <?php endif; ?>
     </ul>
 </nav>
